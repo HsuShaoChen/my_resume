@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>個人網頁</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const skills = [
+          { name: "Python", percentage: "70%", color: "#FFCDB2" },
+          { name: "Java", percentage: "60%", color: "#FFB4A2" },
+          { name: "MySQL", percentage: "75%", color: "#E5989B" },
+          { name: "HTML", percentage: "65%", color: "#B5838D" },
+          { name: "CSS", percentage: "60%", color: "#6D6875" },
+          { name: ".NET", percentage: "60%", color: "#8E9AAF" }
+        ];
+
+        const skillsContainer = document.querySelector(".skills-container");
+  
+        skillsContainer.innerHTML = '';
+        
+        skills.forEach(skill => {
+          const container = document.createElement("div");
+          container.className = "g-container";
+          
+          const percentValue = parseInt(skill.percentage);
+          
+          container.innerHTML = `
+            <div class="percent-container">
+              <div class="g-progress" style="--target-percentage: ${percentValue}; --color: ${skill.color};"></div>
+              <div class="g-circle" style="--color: ${skill.color}; --target-percentage: ${percentValue}"></div>
+              <div class="percentage-text">0%</div>
+            </div>
+            <p>${skill.name}</p>
+          `;
+          skillsContainer.appendChild(container);
+        });
+
+        setTimeout(() => {
+          const observers = [];
+          document.querySelectorAll('.g-container').forEach(container => {
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  const progress = entry.target.querySelector('.g-progress');
+                  const circle = entry.target.querySelector('.g-circle');
+                  const percentText = entry.target.querySelector('.percentage-text');
+                  const targetPercentage = parseInt(progress.style.getPropertyValue('--target-percentage'));
+                  
+                  animateProgress(progress, circle, percentText, targetPercentage);
+                  
+                  observer.unobserve(entry.target);
+                }
+              });
+            }, { threshold: 0.1 });
+            
+            observer.observe(container);
+            observers.push(observer);
+          });
+        }, 100);
+        
+        function animateProgress(progressElem, circleElem, textElem, target) {
+          let current = 0;
+          const duration = 1500; 
+          const step = target / (duration / 16); 
+          
+          function update() {
+            current += step;
+            if (current >= target) {
+              current = target;
+              progressElem.style.setProperty('--percentage', `${current}%`);
+              circleElem.style.setProperty('--percentage', current);
+              textElem.textContent = `${Math.round(current)}%`;
+              return;
+            }
+            
+            progressElem.style.setProperty('--percentage', `${current}%`);
+            circleElem.style.setProperty('--percentage', current);
+            textElem.textContent = `${Math.round(current)}%`;
+            
+            requestAnimationFrame(update);
+          }
+          
+          requestAnimationFrame(update);
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.carousel-slide');
+        let currentSlide = 0;
+        
+        function goToSlide(index) {
+          slides[currentSlide].classList.remove('active');
+          
+          currentSlide = index;
+          if (currentSlide < 0) currentSlide = slides.length - 1;
+          if (currentSlide >= slides.length) currentSlide = 0;
+          
+          slides[currentSlide].classList.add('active');
+        }
+    
+        function nextSlide() {
+          goToSlide(currentSlide + 1);
+        }
+        
+        setInterval(nextSlide, 3000);
+      });
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>MyWebsite 個人網站</h1>
+    </header>
+
+    <nav>
+      <a href="#contact">聯絡資訊</a>
+      <a href="#education">求學經歷</a>
+      <a href="#skills">專業技能</a>
+      <a href="#projects">專案經驗</a>
+      <a href="#clubs">社團經驗</a>
+      <a href="#work">工作經驗</a>
+      <a href="#activities">大學參與活動</a>
+    </nav>
+
+    <main>
+      <aside id="contact" class="card-container">
+        <div class="card1">
+          <img class="item_image3" src="image/picture/me.jpg" style="border-radius:50%"/>
+          <p class="p1">Shao-Chen Hsu<br>許劭禎</p>
+        </div>
+        <div class="card2">
+          <div class="flex-container">
+            <img src="image/picture/star.png" alt="星星圖片" class="star-image">
+            <p class="p3">&quot; 勇於接受挑戰<br>傾聽自己內心的聲音 &quot;</p>
+          </div>
+          <hr class="dashed-line">
+          <div class="info">
+            <p>&bull; 生日 : 2004 &frasl; 07 &frasl; 11<br>&bull; 中原大學資管系大三<br>&bull; 興趣 : 閱讀、聽音樂和探索新領域</p>
+          </div>
+          <hr class="dashed-line">
+          <div class="rwdcenter">
+            <div class="contact-header">
+              <img src="image/picture/file.png" alt="聯絡資訊圖片" class="contact-icon">
+              <h2>聯絡資訊</h2>
+            </div>
+            <a href="https://www.facebook.com/profile.php?id=100007721701591&mibextid=LQQJ4d"><img src="image/picture/facebook.jpg" class="icon"></a>
+            <a href="https://www.instagram.com/s.c_0711?igsh=YXFtZjE1bWVsN2li&utm_source=qr"><img src="image/picture/ig.jpg" class="icon"></a>
+            <a href="mailto:jennyhsu0711@gmail.com"><img src="image/picture/gmail.jpg" class="icon"></a>
+          </div>
+        </div>
+      </aside>
+
+      <article>
+        <section id="education" class="card">
+          <div class="section-header">
+            <img src="image/picture/school.png" alt="求學經歷圖片" class="section-icon">
+            <h2>求學經歷</h2>
+          </div>
+          <div class="school-container">
+            <div class="school">
+              <div class="school-img">
+                <img class="imgschool" src="image/picture/elementary.jpg" alt="麗林國小">
+              </div>
+              <div class="school-name">
+                <p class="schoolname">麗林國小</p>
+              </div>
+            </div>
+            <div class="school">
+              <div class="school-img">
+                <img class="imgschool" src="image/picture/junior.jpg" alt="林口國中">
+              </div>
+              <div class="school-name">
+                <p class="schoolname">林口國中</p>
+              </div>
+            </div>
+            <div class="school">
+              <div class="school-img">
+                <img class="imgschool" src="image/picture/senior.png" alt="林口高中">
+              </div>
+              <div class="school-name">
+                <p class="schoolname">林口高中</p>
+              </div>
+            </div>
+            <div class="school">
+              <div class="school-img">
+                <img class="imgschool" src="image/picture/cycu.png" alt="中原大學資管系">
+              </div>
+              <div class="school-name">
+                <p class="schoolname">中原大學<br>資訊管理學系</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="skills" class="card">
+          <div class="section-header">
+            <img src="image/picture/skills.png" alt="專業技能圖片" class="section-icon">
+            <h2>專業技能</h2>
+          </div>
+          <div class="skills-container">
+            <div class="g-container">
+              <div class="g-progress" style="--percentage: 70%;"></div>
+              <div class="g-circle"></div>
+              <p>Python</p>
+            </div>
+            <div class="g-container">
+              <div class="g-progress" style="--percentage: 60%;"></div>
+              <div class="g-circle"></div>
+              <p>Java</p>
+            </div>
+            <div class="g-container">
+              <div class="g-progress" style="--percentage: 75%;"></div>
+              <div class="g-circle"></div>
+              <p>MySQL</p>
+            </div>
+            <div class="g-container">
+              <div class="g-progress" style="--percentage: 65%;"></div>
+              <div class="g-circle"></div>
+              <p>HTML</p>
+            </div>
+            <div class="g-container">
+              <div class="g-progress" style="--percentage: 60%;"></div>
+              <div class="g-circle"></div>
+              <p>CSS</p>
+            </div>
+            <div class="g-container">
+              <div class="g-progress" style="--percentage: 60%;"></div>
+              <div class="g-circle"></div>
+              <p>.NET</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="projects" class="card">
+          <div class="section-header">
+            <img src="image/picture/project.png" alt="專案經驗圖片" class="section-icon">
+            <h2>專案經驗</h2>
+          </div>
+          <div class="club-content">
+            <div class="carousel-wrapper">
+              <div class="carousel-container">
+                <div class="carousel-slides">
+                  <img src="image/picture/project1.png" alt="Project 1" class="carousel-slide active">
+                  <img src="image/picture/project2.png" alt="Project 2" class="carousel-slide">
+                  <img src="image/picture/project3.png" alt="Project 3" class="carousel-slide">
+                  <img src="image/picture/project4.png" alt="Project 4" class="carousel-slide">
+                </div>
+              </div>
+            </div>
+            <p class="proiect-text">這次開發鮮花商務網站，我負責導航欄、商品頁面、關於我們、購物車、常見問題等前端部分，並將這些前端檔案串接起來，確保整體網站具備響應式設計（RWD）。  
+              在開發過程中，我認為最有挑戰的部分是導航欄的設計與響應式設計的調整。雖然使用了 Bootstrap，可以減少一些 CSS 的調整，但導航欄的折疊效果、下拉選單的顯示問題，以及不同裝置下元素的對齊和間距，還是讓我遇到了一些困難，花了不少時間調整細節。              
+            <br>
+            <a href="https://hsushaochen.github.io/e_website/pages/index.html">鮮花商務網站</a>
+            </p>
+          </div>
+          <hr class="dashed-line2">
+          <div class="club-content">
+            <p class="proiect-text">當我進行後端開發時，學會如何結合JSP、Servlet、JDBC和MySQL等技術來實現網站功能。透過這些技術，我成功實現留言板、購物車和商品管理後台等功能。雖然在資料庫操作上遇到一些挑戰，但經過不斷測試，我學會了如何有效處理資料庫連接和查詢。
+            </p>
+            <div class="carousel-wrapper">
+              <div class="carousel-container">
+                <div class="carousel-slides">
+                  <img src="image/picture/project5.png" alt="Project 5" class="carousel-slide active">
+                  <img src="image/picture/project6.png" alt="Project 6" class="carousel-slide">
+                  <img src="image/picture/project7.png" alt="Project 7" class="carousel-slide">
+                  <img src="image/picture/project8.png" alt="Project 8" class="carousel-slide">
+                  <img src="image/picture/project9.png" alt="Project 9" class="carousel-slide">
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr class="dashed-line2">
+          <div class="club-content">
+            <div class="carousel-wrapper">
+              <div class="carousel-container">
+                <div class="carousel-slides">
+                  <img src="image/picture/project10.png" alt="Project 10" class="carousel-slide active">
+                  <img src="image/picture/project11.png" alt="Project 11" class="carousel-slide">
+                  <img src="image/picture/project12.png" alt="Project 12" class="carousel-slide">
+                  <img src="image/picture/project13.png" alt="Project 13" class="carousel-slide">
+                </div>
+              </div>
+            </div>
+            <p class="proiect-text">利用YOLOv8模型來檢測違規車輛的車牌，。系統的後端由於Flask框架開發，並且使用MySQL來儲存車輛資料與違規紀錄。當智慧燈桿抓拍到違規車輛照片時，系統會自動抓取車牌影像進行辨識，並將辨識結果儲存。在管理介面上，經過AI辨識的結果會顯示，並經由人工辨識進行除錯，最終生成罰單。此外，違規車輛的點位資訊會在儀錶板上展示，方便管理人員進行查看和管理。
+            <br>
+            <a href="https://youtu.be/WyuPuSGY-yk">車輛違規系統展示</a>
+            <br>
+            <a href="https://youtu.be/x2BxHzw2y5M">儀錶板違規點位展示</a>
+            </p>
+          </div>
+        </section>
+
+        <section id="clubs" class="card">
+          <div class="section-header">
+            <img src="image/picture/club_icon.png" alt="社團經驗圖片" class="section-icon">
+            <h2>社團經驗</h2>
+          </div>
+          <div class="club-content">
+            <img class="item_image" src="image/picture/club.jpg" />
+            <p class="club-text">&bull; 新生迎新<br>&bull; 社員大會<br>
+              參加活動常常要與組員合作，需要有效地溝通和協作，在這個過程中我學會聆聽和尊重他人的意見，並認識許多不同科系的同學，彼此分享興趣和經歷是一個很好的經歷。</p>
+          </div>
+        </section>
+
+        <section id="work" class="card">
+          <div class="section-header">
+            <img src="image/picture/work_icon.png" alt="工作經驗圖片" class="section-icon">
+            <h2>工作經驗</h2>
+          </div>
+          <div class="work-timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot color1"></div>
+              <div class="timeline-content">
+                <span class="timeline-date">2022年3月 - 現在</span>
+                <h3 class="timeline-title">Kiki Garden工讀</h3>
+                <p class="timeline-description">負責顧客服務與飲品製作，提升溝通能力與團隊合作精神。</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot color2"></div>
+              <div class="timeline-content">
+                <span class="timeline-date">2024年7月 - 2024年8月</span>
+                <h3 class="timeline-title">營隊輔導員</h3>
+                <p class="timeline-description">協助老師上課、負責小朋友簽到退、記錄小朋友上課狀況。培養教學輔助能力與兒童互動技巧。</p>
+              </div>
+            </div>
+            
+            <div class="timeline-item">
+              <div class="timeline-dot color3"></div>
+              <div class="timeline-content">
+                <span class="timeline-date">2022年6月 - 2022年10月</span>
+                <h3 class="timeline-title">秘食咖啡工讀</h3>
+                <p class="timeline-description">學習咖啡製作技巧，同時培養了顧客服務與多工處理能力。</p>
+              </div>
+            </div>
+            
+            <div class="timeline-item">
+              <div class="timeline-dot color4"></div>
+              <div class="timeline-content">
+                <span class="timeline-date">2022年2月 - 2022年8月</span>
+                <h3 class="timeline-title">麥味登假日工讀</h3>
+                <p class="timeline-description">負責餐點製作與店鋪清潔，培養責任感與工作效率。</p>
+              </div>
+            </div>
+            
+            <div class="timeline-item">
+              <div class="timeline-dot color5"></div>
+              <div class="timeline-content">
+                <span class="timeline-date">2021年6月 - 2021年8月</span>
+                <h3 class="timeline-title">禾聯家電暑期工讀生</h3>
+                <p class="timeline-description">參與產品組裝與品質檢驗，學習了基本工廠作業流程。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="activities" class="card">
+          <div class="section-header">
+            <img src="image/picture/team_icon.png" alt="大學參與活動圖片" class="section-icon">
+            <h2>大學參與活動</h2>
+          </div>
+          <div class="team-content">
+            <img class="item_image4" src="image/picture/team.jpg" />
+            <div class="team-text">
+              <ul>
+                <li>大學一年級參加女籃新生盃</li>
+                <li>大學一年級管理學曾與愛鄰社合作去相關機構陪伴孩子</li>
+                <li>大學二年級參加運動會大隊接力</li>
+              </ul>
+              <p>不論是在團隊項目中合作還是在比賽中與對手競爭，都會需要與其他人有效地溝通和協作，這對於我的團隊合作和溝通技巧能力有很大的幫助。</p>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </main>
+    <div class="clearfix"></div>
+    <footer>
+      <h5>Copyright &copy; Shao-Chen Hsu<br>contact me &rarr; jennyhsu0711@gmail.com</h5>
+    </footer>
+  </body>
+</html>
